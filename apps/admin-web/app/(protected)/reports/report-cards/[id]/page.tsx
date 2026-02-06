@@ -1,7 +1,7 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { ArrowLeft, Lock, FileText, User, Award } from 'lucide-react';
+import { useRouter, useParams } from 'next/navigation';
+import { ArrowLeft, Lock, FileText, User } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageContent, Card } from '@/components/layout/PageContent';
 import { Button } from '@/components/ui/Button';
@@ -14,11 +14,11 @@ import { reportsClient } from '@school-erp/api-client';
 
 const STATUS_VARIANTS: Record<string, 'default' | 'success' | 'warning'> = { draft: 'default', published: 'success', pending: 'warning' };
 
-interface PageProps { params: { id: string }; }
-
-export default function ReportCardDetailPage({ params }: PageProps) {
+export default function ReportCardDetailPage() {
+    const params = useParams<{ id: string }>();
+    const id = params.id;
     const router = useRouter();
-    const { data: report, isLoading, isError, refetch } = useQuery(() => reportsClient.reportCards.get(params.id));
+    const { data: report, isLoading, isError, refetch } = useQuery(() => reportsClient.reportCards.get(id));
 
     if (isLoading) return <PageLoader />;
     if (isError || !report) return <PageError onRetry={refetch} />;

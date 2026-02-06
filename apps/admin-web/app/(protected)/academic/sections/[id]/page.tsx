@@ -5,8 +5,8 @@
  */
 
 import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { ArrowLeft, Save, Trash2, Users, UserPlus } from 'lucide-react';
+import { useRouter, useSearchParams, useParams } from 'next/navigation';
+import { ArrowLeft, Save, Trash2, Users } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageContent, Card } from '@/components/layout/PageContent';
 import { Form, FormSection, FormActions } from '@/components/ui/Form';
@@ -22,11 +22,9 @@ import { useToast } from '@/components/ui/Toast';
 import { useConfirm } from '@/components/ui/ConfirmDialog';
 import { academicClient, isApiError } from '@school-erp/api-client';
 
-interface PageProps {
-    params: { id: string };
-}
+export default function SectionDetailPage() {
+    const params = useParams<{ id: string }>();
 
-export default function SectionDetailPage({ params }: PageProps) {
     const router = useRouter();
     const searchParams = useSearchParams();
     const toast = useToast();

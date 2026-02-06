@@ -5,8 +5,8 @@
  */
 
 import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { ArrowLeft, Save, Trash2, Play, Calendar } from 'lucide-react';
+import { useRouter, useSearchParams, useParams } from 'next/navigation';
+import { ArrowLeft, Save, Play, Calendar } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageContent, Card } from '@/components/layout/PageContent';
 import { Form, FormSection, FormActions } from '@/components/ui/Form';
@@ -22,11 +22,9 @@ import { useToast } from '@/components/ui/Toast';
 import { useConfirm } from '@/components/ui/ConfirmDialog';
 import { academicClient, isApiError } from '@school-erp/api-client';
 
-interface PageProps {
-    params: { id: string };
-}
-
-export default function AcademicYearDetailPage({ params }: PageProps) {
+export default function AcademicYearDetailPage() {
+    const params = useParams<{ id: string }>();
+    const id = params.id;
     const router = useRouter();
     const searchParams = useSearchParams();
     const toast = useToast();
@@ -48,18 +46,18 @@ export default function AcademicYearDetailPage({ params }: PageProps) {
         if (year) {
             setFormData({
                 name: year.name,
-                startDate: year.startDate.split('T')[0],
-                endDate: year.endDate.split('T')[0],
+                startDate: new Date(year.startDate).toISOString().split('T')[0],
+                endDate: new Date(year.endDate).toISOString().split('T')[0],
             });
         }
     }, [year]);
 
     const updateMutation = useMutation(
         () =>
-            academicClient.years.update(params.id, {
+            academicClient.years.update(id, {
                 name: formData.name,
-                startDate: formData.startDate,
-                endDate: formData.endDate,
+                startDate: new Date(formData.startDate),
+                endDate: new Date(formData.endDate),
             }),
         {
             onSuccess: () => {
@@ -77,25 +75,8 @@ export default function AcademicYearDetailPage({ params }: PageProps) {
         }
     );
 
-    const deleteMutation = useMutation(
-        () => academicClient.years.delete(params.id),
-        {
-            onSuccess: () => {
-                toast.success('Academic year deleted successfully');
-                router.push('/academic/years');
-            },
-            onError: (error) => {
-                if (isApiError(error)) {
-                    toast.error(error.message);
-                } else {
-                    toast.error('Failed to delete academic year');
-                }
-            },
-        }
-    );
-
     const activateMutation = useMutation(
-        () => academicClient.years.activate(params.id),
+        () => academicClient.years.activate(id),
         {
             onSuccess: () => {
                 toast.success('Academic year activated successfully');
@@ -110,19 +91,6 @@ export default function AcademicYearDetailPage({ params }: PageProps) {
             },
         }
     );
-
-    const handleDelete = async () => {
-        const confirmed = await confirm({
-            title: 'Delete Academic Year',
-            message: `Are you sure you want to delete "${year?.name}"? This action cannot be undone.`,
-            confirmLabel: 'Delete',
-            variant: 'danger',
-        });
-
-        if (confirmed) {
-            deleteMutation.mutate(undefined);
-        }
-    };
 
     const handleActivate = async () => {
         const confirmed = await confirm({
@@ -179,16 +147,6 @@ export default function AcademicYearDetailPage({ params }: PageProps) {
                                     <WithPermission permission="academic_year:update:tenant">
                                         <Button onClick={() => setIsEditing(true)}>Edit</Button>
                                     </WithPermission>
-                                    <WithPermission permission="academic_year:delete:tenant">
-                                        <Button
-                                            variant="danger"
-                                            onClick={handleDelete}
-                                            isLoading={deleteMutation.isLoading}
-                                        >
-                                            <Trash2 className="mr-2 h-4 w-4" />
-                                            Delete
-                                        </Button>
-                                    </WithPermission>
                                 </>
                             )}
                         </div>
@@ -202,8 +160,8 @@ export default function AcademicYearDetailPage({ params }: PageProps) {
                         <div>
                             <p className="text-sm text-gray-500">Status</p>
                             <div className="flex items-center gap-2">
-                                <Badge variant={year.status === 'active' ? 'success' : 'default'}>
-                                    {year.status}
+                                <Badge variant={year.isActive ? 'success' : 'default'}>
+                                    {year.isActive ? 'Active' : 'Inactive'}
                                 </Badge>
                                 {isCurrent && <Badge variant="info">Current Year</Badge>}
                             </div>

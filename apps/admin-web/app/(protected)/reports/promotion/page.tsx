@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { TrendingUp, Lock, Users, CheckCircle, XCircle } from 'lucide-react';
+import { Lock, Users, CheckCircle, XCircle } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageContent, Card } from '@/components/layout/PageContent';
 import { DataTable, type Column } from '@/components/ui/DataTable';
@@ -14,15 +14,15 @@ import { reportsClient, type PromotionStatus } from '@school-erp/api-client';
 
 export default function PromotionPage() {
     const [page, setPage] = useState(1);
-    const [classId, setClassId] = useState('');
+    const [classId, _] = useState('');
 
     const { data, isLoading, isError, refetch } = useQuery(() => reportsClient.promotion.list({ page, limit: 25, classId: classId || undefined }));
 
     const columns: Column<PromotionStatus>[] = [
         { key: 'student', header: 'Student', accessor: (row) => row.student?.name ?? '—', render: (v) => <div className="flex items-center gap-2"><Users className="h-4 w-4 text-gray-400" /><span className="font-medium">{String(v)}</span></div> },
         { key: 'class', header: 'Current Class', accessor: (row) => row.currentClass ?? '—' },
-        { key: 'percentage', header: 'Percentage', accessor: 'percentage', align: 'right', render: (v) => <span>{v}%</span> },
-        { key: 'attendance', header: 'Attendance', accessor: 'attendancePercentage', align: 'right', render: (v) => <span className={Number(v) < 75 ? 'text-red-600' : ''}>{v}%</span> },
+        { key: 'percentage', header: 'Percentage', accessor: 'percentage', align: 'right', render: (v) => <span>{String(v)}%</span> },
+        { key: 'attendance', header: 'Attendance', accessor: 'attendancePercentage', align: 'right', render: (v) => <span className={Number(v) < 75 ? 'text-red-600' : ''}>{String(v)}%</span> },
         {
             key: 'eligible', header: 'Eligible', accessor: 'isEligible',
             render: (v) => v ? <div className="flex items-center gap-1 text-green-600"><CheckCircle className="h-4 w-4" />Yes</div> : <div className="flex items-center gap-1 text-red-600"><XCircle className="h-4 w-4" />No</div>

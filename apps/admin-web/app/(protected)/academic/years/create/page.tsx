@@ -32,8 +32,8 @@ export default function CreateAcademicYearPage() {
         () =>
             academicClient.years.create({
                 name: formData.name,
-                startDate: formData.startDate,
-                endDate: formData.endDate,
+                startDate: new Date(formData.startDate),
+                endDate: new Date(formData.endDate),
             }),
         {
             onSuccess: (year) => {

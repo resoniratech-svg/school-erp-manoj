@@ -1,24 +1,21 @@
 'use client';
 
-import { useState } from 'react';
+
 import {
     Download,
     FileSpreadsheet,
     FileText,
     Receipt,
     TrendingUp,
-    Clock,
     DollarSign,
     AlertCircle,
 } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageContent, Card } from '@/components/layout/PageContent';
-import { Button } from '@/components/ui/Button';
 import { PageLoader } from '@/components/ui/PageLoader';
-import { PageError } from '@/components/ui/PageError';
 import { WithPermission } from '@/components/auth/WithPermission';
 import { useQuery } from '@/lib/hooks';
-import { accountingClient, type GSTSummary, type RevenueSummary } from '@school-erp/api-client';
+import { accountingClient, type GSTSummary } from '@school-erp/api-client';
 
 function formatAmount(paise: number): string {
     return `₹${(paise / 100).toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams, useParams } from 'next/navigation';
 import { ArrowLeft, Save, Trash2, BookOpen } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageContent, Card } from '@/components/layout/PageContent';
@@ -18,9 +18,9 @@ import { useToast } from '@/components/ui/Toast';
 import { useConfirm } from '@/components/ui/ConfirmDialog';
 import { libraryClient, isApiError } from '@school-erp/api-client';
 
-interface PageProps { params: { id: string }; }
-
-export default function BookDetailPage({ params }: PageProps) {
+export default function BookDetailPage() {
+    const params = useParams<{ id: string }>();
+    const id = params.id;
     const router = useRouter();
     const searchParams = useSearchParams();
     const toast = useToast();
@@ -28,16 +28,16 @@ export default function BookDetailPage({ params }: PageProps) {
     const [isEditing, setIsEditing] = useState(searchParams.get('edit') === 'true');
     const [formData, setFormData] = useState({ title: '', author: '', isbn: '', totalCopies: '', category: '' });
 
-    const { data: book, isLoading, isError, refetch } = useQuery(() => libraryClient.books.get(params.id));
+    const { data: book, isLoading, isError, refetch } = useQuery(() => libraryClient.books.get(id));
 
     useEffect(() => { if (book) setFormData({ title: book.title, author: book.author ?? '', isbn: book.isbn ?? '', totalCopies: String(book.totalCopies), category: book.category ?? '' }); }, [book]);
 
-    const updateMutation = useMutation(() => libraryClient.books.update(params.id, { title: formData.title, author: formData.author, isbn: formData.isbn || undefined, totalCopies: parseInt(formData.totalCopies, 10), category: formData.category || undefined }), {
+    const updateMutation = useMutation(() => libraryClient.books.update(id, { title: formData.title, author: formData.author, isbn: formData.isbn || undefined, totalCopies: parseInt(formData.totalCopies, 10), category: formData.category || undefined }), {
         onSuccess: () => { toast.success('Updated'); setIsEditing(false); refetch(); },
         onError: (e) => toast.error(isApiError(e) ? e.message : 'Failed'),
     });
 
-    const deleteMutation = useMutation(() => libraryClient.books.delete(params.id), {
+    const deleteMutation = useMutation(() => libraryClient.books.delete(id), {
         onSuccess: () => { toast.success('Deleted'); router.push('/library/books'); },
         onError: (e) => toast.error(isApiError(e) ? e.message : 'Cannot delete'),
     });

@@ -1,7 +1,6 @@
 'use client';
 
-import { useState } from 'react';
-import { ToggleRight, AlertTriangle, Info } from 'lucide-react';
+import { ToggleRight, AlertTriangle } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageContent, Card } from '@/components/layout/PageContent';
 import { Button } from '@/components/ui/Button';

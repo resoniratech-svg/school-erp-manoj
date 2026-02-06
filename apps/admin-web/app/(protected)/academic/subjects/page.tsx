@@ -24,15 +24,13 @@ import { academicClient, type Subject } from '@school-erp/api-client';
 const SUBJECT_TYPE_LABELS: Record<string, string> = {
     core: 'Core',
     elective: 'Elective',
-    language: 'Language',
-    activity: 'Activity',
+    extra: 'Extra',
 };
 
 const SUBJECT_TYPE_VARIANTS: Record<string, 'default' | 'success' | 'info' | 'warning'> = {
     core: 'success',
     elective: 'info',
-    language: 'warning',
-    activity: 'default',
+    extra: 'warning',
 };
 
 export default function SubjectsPage() {
@@ -95,16 +93,6 @@ export default function SubjectsPage() {
             render: (value) => (
                 <Badge variant={SUBJECT_TYPE_VARIANTS[String(value)] ?? 'default'}>
                     {SUBJECT_TYPE_LABELS[String(value)] ?? String(value)}
-                </Badge>
-            ),
-        },
-        {
-            key: 'status',
-            header: 'Status',
-            accessor: 'status',
-            render: (value) => (
-                <Badge variant={value === 'active' ? 'success' : 'default'}>
-                    {String(value)}
                 </Badge>
             ),
         },

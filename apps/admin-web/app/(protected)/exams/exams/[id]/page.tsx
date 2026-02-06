@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams, useParams } from 'next/navigation';
 import { ArrowLeft, Save, Trash2, Play, Lock, FileText } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageContent, Card } from '@/components/layout/PageContent';
@@ -37,11 +37,9 @@ const STATUS_VARIANTS: Record<string, 'default' | 'success' | 'warning' | 'info'
     completed: 'info',
 };
 
-interface PageProps {
-    params: { id: string };
-}
-
-export default function ExamDetailPage({ params }: PageProps) {
+export default function ExamDetailPage() {
+    const params = useParams<{ id: string }>();
+    const id = params.id;
     const router = useRouter();
     const searchParams = useSearchParams();
     const toast = useToast();
@@ -58,7 +56,7 @@ export default function ExamDetailPage({ params }: PageProps) {
     });
 
     const { data: exam, isLoading, isError, refetch } = useQuery(
-        () => examsClient.get(params.id)
+        () => examsClient.get(id)
     );
 
     useEffect(() => {
@@ -77,7 +75,7 @@ export default function ExamDetailPage({ params }: PageProps) {
 
     const updateMutation = useMutation(
         () =>
-            examsClient.update(params.id, {
+            examsClient.update(id, {
                 name: formData.name,
                 type: formData.type,
                 startDate: formData.startDate,
@@ -101,7 +99,7 @@ export default function ExamDetailPage({ params }: PageProps) {
     );
 
     const publishMutation = useMutation(
-        () => examsClient.publish(params.id),
+        () => examsClient.publish(id),
         {
             onSuccess: () => {
                 toast.success('Exam published');
@@ -118,7 +116,7 @@ export default function ExamDetailPage({ params }: PageProps) {
     );
 
     const deleteMutation = useMutation(
-        () => examsClient.delete(params.id),
+        () => examsClient.delete(id),
         {
             onSuccess: () => {
                 toast.success('Exam deleted');

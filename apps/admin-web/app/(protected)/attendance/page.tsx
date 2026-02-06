@@ -5,7 +5,7 @@
  */
 
 import Link from 'next/link';
-import { Users, UserCheck, ClipboardCheck, Calendar } from 'lucide-react';
+import { Users, UserCheck, ClipboardCheck } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageContent, Card } from '@/components/layout/PageContent';
 import { WithFeature } from '@/components/auth/WithFeature';

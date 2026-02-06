@@ -9,11 +9,14 @@ import { buildQueryParams, type QueryParams } from '../types/pagination';
 export interface FeeStructure {
     id: string;
     name: string;
-    academicYearId: string;
+    type: string;
+    description?: string;
+    academicYearId?: string;
     classId?: string;
     amount: number;
-    dueDate: string;
-    components: FeeComponent[];
+    dueDate?: string;
+    status: 'active' | 'inactive';
+    components?: FeeComponent[];
 }
 
 export interface FeeComponent {
@@ -28,28 +31,43 @@ export interface FeeAssignment {
     feeStructureId: string;
     totalAmount: number;
     paidAmount: number;
-    status: 'pending' | 'partial' | 'paid';
+    status: 'pending' | 'partial' | 'paid' | 'overdue';
     dueDate: string;
+    student?: { id: string; name: string; rollNumber: string };
+    feeStructure?: { id: string; name: string };
+    payments?: any[];
 }
 
 export interface Payment {
     id: string;
     assignmentId: string;
     amount: number;
-    method: 'cash' | 'online' | 'cheque' | 'bank_transfer';
+    method: 'cash' | 'online' | 'cheque' | 'bank_transfer' | 'card' | 'upi';
+    mode: string;
     transactionId?: string;
     receiptNumber: string;
-    paidAt: Date;
-    collectedBy: string;
+    referenceNumber?: string;
+    status: 'pending' | 'completed' | 'failed';
+    paidAt: string;
+    createdAt: string;
+    collectedBy?: string;
+    createdBy?: string;
+    student?: { id: string; name: string; rollNumber: string };
+    feeAssignment?: {
+        id: string;
+        feeStructure?: { id: string; name: string };
+    };
 }
 
 export interface CreateFeeStructureInput {
     name: string;
-    academicYearId: string;
+    type: string;
+    description?: string;
+    academicYearId?: string;
     classId?: string;
     amount: number;
-    dueDate: string;
-    components: FeeComponent[];
+    dueDate?: string;
+    components?: FeeComponent[];
 }
 
 /**
@@ -90,6 +108,10 @@ export const feesClient = {
             );
             return response.data.data;
         },
+
+        async delete(id: string): Promise<void> {
+            await apiClient.delete(`/api/v1/fees/structures/${id}`);
+        },
     },
 
     /**
@@ -102,6 +124,13 @@ export const feesClient = {
                 `/api/v1/fees/assignments${query}`
             );
             return response.data;
+        },
+
+        async get(id: string): Promise<FeeAssignment> {
+            const response = await apiClient.get<ApiResponse<FeeAssignment>>(
+                `/api/v1/fees/assignments/${id}`
+            );
+            return response.data.data;
         },
 
         async assign(data: { studentId: string; feeStructureId: string }): Promise<FeeAssignment> {
@@ -126,6 +155,30 @@ export const feesClient = {
         async getByStudent(studentId: string): Promise<FeeAssignment[]> {
             const response = await apiClient.get<ApiResponse<FeeAssignment[]>>(
                 `/api/v1/fees/assignments/student/${studentId}`
+            );
+            return response.data.data;
+        },
+
+        async preview(data: {
+            feeStructureId: string;
+            classId: string;
+            sectionId?: string;
+        }): Promise<{ count: number }> {
+            const response = await apiClient.post<ApiResponse<{ count: number }>>(
+                '/api/v1/fees/assignments/preview',
+                data
+            );
+            return response.data.data;
+        },
+
+        async bulkCreate(data: {
+            feeStructureId: string;
+            classId: string;
+            sectionId?: string;
+        }): Promise<{ count: number }> {
+            const response = await apiClient.post<ApiResponse<{ count: number }>>(
+                '/api/v1/fees/assignments/bulk',
+                data
             );
             return response.data.data;
         },
@@ -156,6 +209,13 @@ export const feesClient = {
             return response.data;
         },
 
+        async get(id: string): Promise<Payment> {
+            const response = await apiClient.get<ApiResponse<Payment>>(
+                `/api/v1/fees/payments/${id}`
+            );
+            return response.data.data;
+        },
+
         async getReceipt(paymentId: string): Promise<Blob> {
             const response = await apiClient.get(`/api/v1/fees/payments/${paymentId}/receipt`, {
                 responseType: 'blob',
@@ -168,28 +228,29 @@ export const feesClient = {
      * Reports
      */
     reports: {
-        async defaulters(params?: { classId?: string }): Promise<Array<{
-            studentId: string;
-            name: string;
-            pendingAmount: number;
-            dueDate: string;
-        }>> {
-            const response = await apiClient.get<ApiResponse<Array<{
-                studentId: string;
-                name: string;
-                pendingAmount: number;
-                dueDate: string;
-            }>>>('/api/v1/fees/reports/defaulters', { params });
-            return response.data.data;
+        async defaulters(params?: QueryParams): Promise<PaginatedResponse<any>> {
+            const query = buildQueryParams(params || {});
+            const response = await apiClient.get<PaginatedResponse<any>>(
+                `/api/v1/fees/reports/defaulters${query}`
+            );
+            return response.data;
         },
 
         async collection(params?: { startDate?: string; endDate?: string }): Promise<{
-            totalCollected: number;
-            byMethod: Record<string, number>;
+            summary: {
+                totalCollected: number;
+                totalPending: number;
+                totalOverdue: number;
+            };
+            byMode: Array<{ mode: string; amount: number; count: number }>;
         }> {
             const response = await apiClient.get<ApiResponse<{
-                totalCollected: number;
-                byMethod: Record<string, number>;
+                summary: {
+                    totalCollected: number;
+                    totalPending: number;
+                    totalOverdue: number;
+                };
+                byMode: Array<{ mode: string; amount: number; count: number }>;
             }>>('/api/v1/fees/reports/collection', { params });
             return response.data.data;
         },

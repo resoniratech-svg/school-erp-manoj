@@ -10,7 +10,6 @@ import {
     Clock,
     AlertTriangle,
     XCircle,
-    Building2,
 } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageContent, Card } from '@/components/layout/PageContent';
@@ -50,18 +49,18 @@ function InvoiceCard({ invoice }: { invoice: Invoice }) {
                 <div className="flex items-center gap-3">
                     <div
                         className={`rounded-lg p-2 ${isOverdue
-                                ? 'bg-red-100'
-                                : invoice.status === 'paid'
-                                    ? 'bg-green-100'
-                                    : 'bg-gray-100'
+                            ? 'bg-red-100'
+                            : invoice.status === 'paid'
+                                ? 'bg-green-100'
+                                : 'bg-gray-100'
                             }`}
                     >
                         <FileText
                             className={`h-5 w-5 ${isOverdue
-                                    ? 'text-red-600'
-                                    : invoice.status === 'paid'
-                                        ? 'text-green-600'
-                                        : 'text-gray-600'
+                                ? 'text-red-600'
+                                : invoice.status === 'paid'
+                                    ? 'text-green-600'
+                                    : 'text-gray-600'
                                 }`}
                         />
                     </div>

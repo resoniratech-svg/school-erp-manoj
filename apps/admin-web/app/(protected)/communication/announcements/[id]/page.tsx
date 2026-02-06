@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams, useParams } from 'next/navigation';
 import { ArrowLeft, Save, Play, Lock, Megaphone } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageContent, Card } from '@/components/layout/PageContent';
@@ -21,9 +21,9 @@ import { communicationClient, isApiError } from '@school-erp/api-client';
 const AUDIENCES = ['all', 'students', 'staff', 'parents', 'teachers'];
 const STATUS_VARIANTS: Record<string, 'default' | 'success' | 'info'> = { draft: 'default', published: 'success', archived: 'info' };
 
-interface PageProps { params: { id: string }; }
-
-export default function AnnouncementDetailPage({ params }: PageProps) {
+export default function AnnouncementDetailPage() {
+    const params = useParams<{ id: string }>();
+    const id = params.id;
     const router = useRouter();
     const searchParams = useSearchParams();
     const toast = useToast();
@@ -31,18 +31,18 @@ export default function AnnouncementDetailPage({ params }: PageProps) {
     const [isEditing, setIsEditing] = useState(searchParams.get('edit') === 'true');
     const [formData, setFormData] = useState({ title: '', content: '', audience: 'all' });
 
-    const { data: announcement, isLoading, isError, refetch } = useQuery(() => communicationClient.announcements.get(params.id));
+    const { data: announcement, isLoading, isError, refetch } = useQuery(() => communicationClient.announcements.get(id));
 
     useEffect(() => { if (announcement) setFormData({ title: announcement.title, content: announcement.content ?? '', audience: announcement.audience ?? 'all' }); }, [announcement]);
 
     const isDraft = announcement?.status === 'draft';
 
-    const updateMutation = useMutation(() => communicationClient.announcements.update(params.id, formData), {
+    const updateMutation = useMutation(() => communicationClient.announcements.update(id, formData), {
         onSuccess: () => { toast.success('Updated'); setIsEditing(false); refetch(); },
         onError: (e) => toast.error(isApiError(e) ? e.message : 'Failed'),
     });
 
-    const publishMutation = useMutation(() => communicationClient.announcements.publish(params.id), {
+    const publishMutation = useMutation(() => communicationClient.announcements.publish(id), {
         onSuccess: () => { toast.success('Published'); refetch(); },
         onError: (e) => toast.error(isApiError(e) ? e.message : 'Failed'),
     });

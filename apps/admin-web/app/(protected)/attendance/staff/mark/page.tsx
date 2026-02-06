@@ -6,7 +6,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Save, AlertTriangle, Clock } from 'lucide-react';
+import { ArrowLeft, Save, AlertTriangle } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageContent, Card } from '@/components/layout/PageContent';
 import { Button } from '@/components/ui/Button';
@@ -173,10 +173,10 @@ export default function MarkStaffAttendancePage() {
                                                         handleChange(staff.staffId, 'status', e.target.value)
                                                     }
                                                     className={`w-full rounded-lg border px-3 py-2 text-sm ${staff.status === 'present'
-                                                            ? 'border-green-300 bg-green-50'
-                                                            : staff.status === 'absent'
-                                                                ? 'border-red-300 bg-red-50'
-                                                                : 'border-gray-300'
+                                                        ? 'border-green-300 bg-green-50'
+                                                        : staff.status === 'absent'
+                                                            ? 'border-red-300 bg-red-50'
+                                                            : 'border-gray-300'
                                                         }`}
                                                 >
                                                     {STATUS_OPTIONS.map((opt) => (

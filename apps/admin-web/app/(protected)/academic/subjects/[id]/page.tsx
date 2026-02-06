@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams, useParams } from 'next/navigation';
 import { ArrowLeft, Save, Trash2, BookOpen } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageContent, Card } from '@/components/layout/PageContent';
@@ -25,22 +25,18 @@ import { academicClient, isApiError } from '@school-erp/api-client';
 const SUBJECT_TYPES = [
     { value: 'core', label: 'Core' },
     { value: 'elective', label: 'Elective' },
-    { value: 'language', label: 'Language' },
-    { value: 'activity', label: 'Activity' },
+    { value: 'extra', label: 'Extra' },
 ];
 
 const SUBJECT_TYPE_VARIANTS: Record<string, 'default' | 'success' | 'info' | 'warning'> = {
     core: 'success',
     elective: 'info',
-    language: 'warning',
-    activity: 'default',
+    extra: 'warning',
 };
 
-interface PageProps {
-    params: { id: string };
-}
-
-export default function SubjectDetailPage({ params }: PageProps) {
+export default function SubjectDetailPage() {
+    const params = useParams<{ id: string }>();
+    const id = params.id;
     const router = useRouter();
     const searchParams = useSearchParams();
     const toast = useToast();
@@ -55,7 +51,7 @@ export default function SubjectDetailPage({ params }: PageProps) {
     });
 
     const { data: subject, isLoading, isError, refetch } = useQuery(
-        () => academicClient.subjects.get(params.id)
+        () => academicClient.subjects.get(id)
     );
 
     useEffect(() => {
@@ -70,10 +66,10 @@ export default function SubjectDetailPage({ params }: PageProps) {
 
     const updateMutation = useMutation(
         () =>
-            academicClient.subjects.update(params.id, {
+            academicClient.subjects.update(id, {
                 name: formData.name,
                 code: formData.code,
-                type: formData.type as 'core' | 'elective' | 'language' | 'activity',
+                type: formData.type as 'core' | 'elective' | 'extra',
             }),
         {
             onSuccess: () => {
@@ -177,9 +173,6 @@ export default function SubjectDetailPage({ params }: PageProps) {
                                 {SUBJECT_TYPES.find((t) => t.value === subject.type)?.label ?? subject.type}
                             </Badge>
                         </div>
-                        <Badge variant={subject.status === 'active' ? 'success' : 'default'}>
-                            {subject.status}
-                        </Badge>
                     </div>
                 </Card>
 

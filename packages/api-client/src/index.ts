@@ -24,19 +24,19 @@ export { timetableClient } from './timetable/timetable.client';
 export type { TimetableSlot, TimetableView } from './timetable/timetable.client';
 
 export { attendanceClient } from './attendance/attendance.client';
-export type { AttendanceRecord, AttendanceSummary } from './attendance/attendance.client';
+export type { AttendanceRecord, AttendanceSummary, StaffAttendanceRecord } from './attendance/attendance.client';
 
 export { examsClient } from './exams/exams.client';
 export type { Exam, ExamSchedule, Grade } from './exams/exams.client';
 
 export { reportsClient } from './reports/reports.client';
-export type { ReportCard, AttendanceReport, FeeReport } from './reports/reports.client';
+export type { ReportCard, AttendanceReport, FeeReport, PromotionStatus } from './reports/reports.client';
 
 export { feesClient } from './fees/fees.client';
 export type { FeeStructure, FeeAssignment, Payment } from './fees/fees.client';
 
 export { transportClient } from './transport/transport.client';
-export type { Route, Vehicle, TransportAssignment } from './transport/transport.client';
+export type { Route, Route as TransportRoute, Vehicle, TransportAssignment } from './transport/transport.client';
 
 export { libraryClient } from './library/library.client';
 export type { Book, BookIssue } from './library/library.client';
@@ -54,7 +54,7 @@ export { auditClient } from './audit/audit.client';
 export type { AuditLog } from './audit/audit.client';
 
 export { configClient } from './config/config.client';
-export type { ConfigEntry } from './config/config.client';
+export type { ConfigEntry, FeatureFlag, ConfigLimit, ConfigPolicy } from './config/config.client';
 
 export { rateLimitClient } from './rate-limit/rate-limit.client';
 export type { RateLimitRule, RateLimitStatus } from './rate-limit/rate-limit.client';

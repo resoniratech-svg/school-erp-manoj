@@ -6,11 +6,10 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Save, AlertTriangle } from 'lucide-react';
+import { ArrowLeft, Save } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageContent, Card } from '@/components/layout/PageContent';
 import { Button } from '@/components/ui/Button';
-import { Badge } from '@/components/ui/Badge';
 import { PageLoader } from '@/components/ui/PageLoader';
 import { WithFeature } from '@/components/auth/WithFeature';
 import { useQuery, useMutation } from '@/lib/hooks';
@@ -238,10 +237,10 @@ export default function MarkAttendancePage() {
                                                     )
                                                 }
                                                 className={`rounded-lg border px-3 py-2 text-sm ${student.status === 'present'
-                                                        ? 'border-green-300 bg-green-50'
-                                                        : student.status === 'absent'
-                                                            ? 'border-red-300 bg-red-50'
-                                                            : 'border-gray-300'
+                                                    ? 'border-green-300 bg-green-50'
+                                                    : student.status === 'absent'
+                                                        ? 'border-red-300 bg-red-50'
+                                                        : 'border-gray-300'
                                                     }`}
                                             >
                                                 {STATUS_OPTIONS.map((opt) => (

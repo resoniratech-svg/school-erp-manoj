@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams, useParams } from 'next/navigation';
 import { ArrowLeft, Save, User, Calendar } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageContent, Card } from '@/components/layout/PageContent';
@@ -38,11 +38,9 @@ const STATUS_VARIANTS: Record<string, 'success' | 'error' | 'warning' | 'default
     excused: 'default',
 };
 
-interface PageProps {
-    params: { id: string };
-}
-
-export default function AttendanceDetailPage({ params }: PageProps) {
+export default function AttendanceDetailPage() {
+    const params = useParams<{ id: string }>();
+    const id = params.id;
     const router = useRouter();
     const searchParams = useSearchParams();
     const toast = useToast();
@@ -52,7 +50,7 @@ export default function AttendanceDetailPage({ params }: PageProps) {
     const [status, setStatus] = useState<AttendanceStatus>('present');
 
     const { data: record, isLoading, isError, refetch } = useQuery(
-        () => attendanceClient.get(params.id)
+        () => attendanceClient.get(id)
     );
 
     useEffect(() => {
@@ -62,7 +60,7 @@ export default function AttendanceDetailPage({ params }: PageProps) {
     }, [record]);
 
     const updateMutation = useMutation(
-        () => attendanceClient.update(params.id, { status }),
+        () => attendanceClient.update(id, { status }),
         {
             onSuccess: () => {
                 toast.success('Attendance updated');

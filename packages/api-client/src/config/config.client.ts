@@ -13,6 +13,30 @@ export interface ConfigEntry {
     scope: 'system' | 'tenant' | 'branch';
 }
 
+export interface FeatureFlag {
+    key: string;
+    name: string;
+    description?: string;
+    enabled: boolean;
+    scope: 'default' | 'tenant' | 'branch';
+}
+
+export interface ConfigLimit {
+    key: string;
+    name: string;
+    description?: string;
+    value: number;
+    scope: 'default' | 'tenant' | 'branch';
+}
+
+export interface ConfigPolicy {
+    key: string;
+    name: string;
+    description?: string;
+    enabled: boolean;
+    scope: 'default' | 'tenant' | 'branch';
+}
+
 /**
  * Config Client
  */
@@ -97,5 +121,83 @@ export const configClient = {
         }
 
         return result;
+    },
+
+    /**
+     * Feature Flags
+     */
+    features: {
+        /**
+         * List all feature flags
+         */
+        async list(): Promise<{ data: FeatureFlag[] }> {
+            const response = await apiClient.get<ApiResponse<FeatureFlag[]>>(
+                '/api/v1/config/features'
+            );
+            return { data: response.data.data };
+        },
+
+        /**
+         * Update feature flag
+         */
+        async update(key: string, data: { enabled: boolean }): Promise<FeatureFlag> {
+            const response = await apiClient.patch<ApiResponse<FeatureFlag>>(
+                `/api/v1/config/features/${encodeURIComponent(key)}`,
+                data
+            );
+            return response.data.data;
+        },
+    },
+
+    /**
+     * System Limits
+     */
+    limits: {
+        /**
+         * List all limits
+         */
+        async list(): Promise<{ data: ConfigLimit[] }> {
+            const response = await apiClient.get<ApiResponse<ConfigLimit[]>>(
+                '/api/v1/config/limits'
+            );
+            return { data: response.data.data };
+        },
+
+        /**
+         * Update limit
+         */
+        async update(key: string, data: { value: number }): Promise<ConfigLimit> {
+            const response = await apiClient.patch<ApiResponse<ConfigLimit>>(
+                `/api/v1/config/limits/${encodeURIComponent(key)}`,
+                data
+            );
+            return response.data.data;
+        },
+    },
+
+    /**
+     * Policies
+     */
+    policies: {
+        /**
+         * List all policies
+         */
+        async list(): Promise<{ data: ConfigPolicy[] }> {
+            const response = await apiClient.get<ApiResponse<ConfigPolicy[]>>(
+                '/api/v1/config/policies'
+            );
+            return { data: response.data.data };
+        },
+
+        /**
+         * Update policy
+         */
+        async update(key: string, data: { enabled: boolean }): Promise<ConfigPolicy> {
+            const response = await apiClient.patch<ApiResponse<ConfigPolicy>>(
+                `/api/v1/config/policies/${encodeURIComponent(key)}`,
+                data
+            );
+            return response.data.data;
+        },
     },
 };

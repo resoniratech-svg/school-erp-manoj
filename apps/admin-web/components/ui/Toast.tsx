@@ -15,13 +15,25 @@ interface Toast {
     id: string;
     type: ToastType;
     message: string;
+    action?: {
+        label: string;
+        onClick: () => void;
+    };
+}
+
+interface ToastOptions {
+    duration?: number;
+    action?: {
+        label: string;
+        onClick: () => void;
+    };
 }
 
 interface ToastContextValue {
-    toast: (type: ToastType, message: string) => void;
-    success: (message: string) => void;
-    error: (message: string) => void;
-    info: (message: string) => void;
+    toast: (type: ToastType, message: string, options?: ToastOptions) => void;
+    success: (message: string, options?: ToastOptions) => void;
+    error: (message: string, options?: ToastOptions) => void;
+    info: (message: string, options?: ToastOptions) => void;
 }
 
 const ToastContext = createContext<ToastContextValue | null>(null);
@@ -29,14 +41,15 @@ const ToastContext = createContext<ToastContextValue | null>(null);
 export function ToastProvider({ children }: { children: ReactNode }) {
     const [toasts, setToasts] = useState<Toast[]>([]);
 
-    const addToast = useCallback((type: ToastType, message: string) => {
+    const addToast = useCallback((type: ToastType, message: string, options?: ToastOptions) => {
         const id = Math.random().toString(36).slice(2);
-        setToasts((prev) => [...prev, { id, type, message }]);
+        const toast: Toast = { id, type, message, action: options?.action };
+        setToasts((prev) => [...prev, toast]);
 
-        // Auto remove after 5 seconds
+        // Auto remove
         setTimeout(() => {
             setToasts((prev) => prev.filter((t) => t.id !== id));
-        }, 5000);
+        }, options?.duration || 5000);
     }, []);
 
     const removeToast = useCallback((id: string) => {
@@ -45,9 +58,9 @@ export function ToastProvider({ children }: { children: ReactNode }) {
 
     const value: ToastContextValue = {
         toast: addToast,
-        success: (message) => addToast('success', message),
-        error: (message) => addToast('error', message),
-        info: (message) => addToast('info', message),
+        success: (message, options) => addToast('success', message, options),
+        error: (message, options) => addToast('error', message, options),
+        info: (message, options) => addToast('info', message, options),
     };
 
     return (
@@ -70,6 +83,14 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                         {toast.type === 'error' && <AlertCircle className="h-5 w-5" />}
                         {toast.type === 'info' && <Info className="h-5 w-5" />}
                         <span className="text-sm font-medium">{toast.message}</span>
+                        {toast.action && (
+                            <button
+                                onClick={toast.action.onClick}
+                                className="ml-2 rounded bg-white/20 px-2 py-1 text-xs font-semibold hover:bg-white/30"
+                            >
+                                {toast.action.label}
+                            </button>
+                        )}
                         <button
                             onClick={() => removeToast(toast.id)}
                             className="ml-2 rounded p-1 hover:bg-black/10"

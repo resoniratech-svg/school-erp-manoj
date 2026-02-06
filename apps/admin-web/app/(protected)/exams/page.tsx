@@ -5,7 +5,7 @@
  */
 
 import Link from 'next/link';
-import { FileText, Calendar, Award, BarChart3 } from 'lucide-react';
+import { FileText, Calendar, Award } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageContent, Card } from '@/components/layout/PageContent';
 import { WithFeature } from '@/components/auth/WithFeature';

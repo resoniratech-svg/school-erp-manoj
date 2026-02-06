@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams, useParams } from 'next/navigation';
 import { ArrowLeft, Save, Trash2 } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageContent, Card } from '@/components/layout/PageContent';
@@ -21,11 +21,9 @@ import { useToast } from '@/components/ui/Toast';
 import { useConfirm } from '@/components/ui/ConfirmDialog';
 import { usersClient, rolesClient, isApiError } from '@school-erp/api-client';
 
-interface UserDetailPageProps {
-    params: { id: string };
-}
-
-export default function UserDetailPage({ params }: UserDetailPageProps) {
+export default function UserDetailPage() {
+    const params = useParams<{ id: string }>();
+    const id = params.id;
     const router = useRouter();
     const searchParams = useSearchParams();
     const toast = useToast();
@@ -41,7 +39,7 @@ export default function UserDetailPage({ params }: UserDetailPageProps) {
     });
 
     const { data: user, isLoading, isError, refetch } = useQuery(
-        () => usersClient.get(params.id)
+        () => usersClient.get(id)
     );
 
     const { data: rolesData } = useQuery(() => rolesClient.list({ limit: 100 }));
@@ -60,7 +58,7 @@ export default function UserDetailPage({ params }: UserDetailPageProps) {
 
     const updateMutation = useMutation(
         () =>
-            usersClient.update(params.id, {
+            usersClient.update(id, {
                 firstName: formData.firstName,
                 lastName: formData.lastName,
                 status: formData.status,
@@ -83,7 +81,7 @@ export default function UserDetailPage({ params }: UserDetailPageProps) {
     );
 
     const deleteMutation = useMutation(
-        () => usersClient.delete(params.id),
+        () => usersClient.delete(id),
         {
             onSuccess: () => {
                 toast.success('User deleted successfully');
@@ -279,8 +277,8 @@ export default function UserDetailPage({ params }: UserDetailPageProps) {
                                 <label
                                     key={role.id}
                                     className={`cursor-pointer rounded-lg border px-3 py-2 text-sm transition-colors ${formData.roleIds.includes(role.id)
-                                            ? 'border-primary-500 bg-primary-50 text-primary-700'
-                                            : 'border-gray-300 hover:bg-gray-50'
+                                        ? 'border-primary-500 bg-primary-50 text-primary-700'
+                                        : 'border-gray-300 hover:bg-gray-50'
                                         }`}
                                 >
                                     <input

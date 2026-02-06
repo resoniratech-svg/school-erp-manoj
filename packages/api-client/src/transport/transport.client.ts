@@ -9,14 +9,18 @@ import { buildQueryParams, type QueryParams } from '../types/pagination';
 export interface Route {
     id: string;
     name: string;
-    startLocation: string;
-    endLocation: string;
-    stops: RouteStop[];
+    code?: string;
+    description?: string;
+    status?: string;
+    startLocation?: string;
+    endLocation?: string;
+    stops?: RouteStop[];
     vehicleId?: string;
     driverId?: string;
 }
 
 export interface RouteStop {
+    id: string;
     name: string;
     arrivalTime: string;
     sequence: number;
@@ -25,17 +29,26 @@ export interface RouteStop {
 export interface Vehicle {
     id: string;
     registrationNumber: string;
+    model?: string;
     capacity: number;
-    type: 'bus' | 'van' | 'other';
-    status: 'active' | 'maintenance' | 'inactive';
+    currentOccupancy?: number;
+    routeId?: string;
+    route?: { id: string; name: string };
+    type?: 'bus' | 'van' | 'other';
+    status?: 'active' | 'maintenance' | 'inactive';
 }
 
 export interface TransportAssignment {
     id: string;
     studentId: string;
     routeId: string;
-    pickupStop: string;
-    dropStop: string;
+    stopId?: string;
+    pickupStop?: string;
+    dropStop?: string;
+    status: string;
+    student?: { id: string; name: string };
+    route?: { id: string; name: string };
+    stop?: { id: string; name: string };
 }
 
 /**
@@ -116,6 +129,10 @@ export const transportClient = {
             );
             return response.data.data;
         },
+
+        async delete(id: string): Promise<void> {
+            await apiClient.delete(`/api/v1/transport/vehicles/${id}`);
+        },
     },
 
     /**
@@ -130,10 +147,29 @@ export const transportClient = {
             return response.data;
         },
 
-        async assign(data: Omit<TransportAssignment, 'id'>): Promise<TransportAssignment> {
+        async create(data: { studentId: string; routeId: string; stopId?: string }): Promise<TransportAssignment> {
             const response = await apiClient.post<ApiResponse<TransportAssignment>>(
                 '/api/v1/transport/assignments',
                 data
+            );
+            return response.data.data;
+        },
+
+        async getUnassignedStudents(params?: { limit?: number }): Promise<PaginatedResponse<{ id: string; name: string }>> {
+            const query = buildQueryParams(params as any);
+            const response = await apiClient.get<PaginatedResponse<{ id: string; name: string }>>(
+                `/api/v1/transport/students/unassigned${query}`
+            );
+            return response.data;
+        },
+
+        async delete(id: string): Promise<void> {
+            await apiClient.delete(`/api/v1/transport/assignments/${id}`);
+        },
+
+        async get(id: string): Promise<TransportAssignment> {
+            const response = await apiClient.get<ApiResponse<TransportAssignment>>(
+                `/api/v1/transport/assignments/${id}`
             );
             return response.data.data;
         },

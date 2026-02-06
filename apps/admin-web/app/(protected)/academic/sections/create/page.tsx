@@ -38,7 +38,7 @@ export default function CreateSectionPage() {
                 name: formData.name,
                 code: formData.code,
                 classId: formData.classId,
-                capacity: parseInt(formData.capacity, 10) || undefined,
+                capacity: formData.capacity ? parseInt(formData.capacity, 10) : 0,
             }),
         {
             onSuccess: (section) => {

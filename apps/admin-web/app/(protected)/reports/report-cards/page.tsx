@@ -25,7 +25,7 @@ export default function ReportCardsListPage() {
         { key: 'student', header: 'Student', accessor: (row) => row.student?.name ?? '—', render: (v) => <div className="flex items-center gap-2"><FileText className="h-4 w-4 text-gray-400" /><span className="font-medium">{String(v)}</span></div> },
         { key: 'class', header: 'Class', accessor: (row) => row.class?.name ?? '—' },
         { key: 'exam', header: 'Exam', accessor: (row) => row.exam?.name ?? '—' },
-        { key: 'status', header: 'Status', accessor: 'status', render: (v, row) => <div className="flex items-center gap-2"><Badge variant={STATUS_VARIANTS[String(v)] ?? 'default'}>{String(v)}</Badge>{v === 'published' && <Lock className="h-3 w-3 text-gray-400" />}</div> },
+        { key: 'status', header: 'Status', accessor: 'status', render: (v, _) => <div className="flex items-center gap-2"><Badge variant={STATUS_VARIANTS[String(v)] ?? 'default'}>{String(v)}</Badge>{v === 'published' && <Lock className="h-3 w-3 text-gray-400" />}</div> },
     ];
 
     const actions: RowAction<ReportCard>[] = [

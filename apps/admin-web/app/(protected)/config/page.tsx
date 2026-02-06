@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Settings, ToggleRight, Hash, Shield, AlertTriangle } from 'lucide-react';
+import { ToggleRight, Hash, Shield, AlertTriangle } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageContent, Card } from '@/components/layout/PageContent';
 import { WithPermission } from '@/components/auth/WithPermission';

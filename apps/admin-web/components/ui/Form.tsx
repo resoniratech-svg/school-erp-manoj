@@ -9,13 +9,14 @@ import { type FormHTMLAttributes, type ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import { FormError } from './FormError';
 
-export interface FormProps extends FormHTMLAttributes<HTMLFormElement> {
+export interface FormProps extends Omit<FormHTMLAttributes<HTMLFormElement>, 'onSubmit'> {
     /** Form children */
     children: ReactNode;
     /** Form-level error */
     error?: string | null;
     /** Is form submitting */
     isSubmitting?: boolean;
+    onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
 export function Form({

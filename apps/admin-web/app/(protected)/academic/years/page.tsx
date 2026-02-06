@@ -6,7 +6,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Plus, Eye, Edit, Trash2, Play, Calendar } from 'lucide-react';
+import { Plus, Eye, Edit, Play, Calendar } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageContent, Card } from '@/components/layout/PageContent';
 import { DataTable, type Column, type RowAction } from '@/components/ui/DataTable';
@@ -31,19 +31,6 @@ export default function AcademicYearsPage() {
         () => academicClient.years.list({ page, limit: 20 })
     );
 
-    const deleteMutation = useMutation(
-        (id: string) => academicClient.years.delete(id),
-        {
-            onSuccess: () => {
-                toast.success('Academic year deleted successfully');
-                refetch();
-            },
-            onError: (error) => {
-                toast.error(error.message);
-            },
-        }
-    );
-
     const activateMutation = useMutation(
         (id: string) => academicClient.years.activate(id),
         {
@@ -56,24 +43,6 @@ export default function AcademicYearsPage() {
             },
         }
     );
-
-    const handleDelete = async (year: AcademicYear) => {
-        if (year.isCurrent) {
-            toast.error('Cannot delete the current academic year');
-            return;
-        }
-
-        const confirmed = await confirm({
-            title: 'Delete Academic Year',
-            message: `Are you sure you want to delete "${year.name}"? This action cannot be undone.`,
-            confirmLabel: 'Delete',
-            variant: 'danger',
-        });
-
-        if (confirmed) {
-            deleteMutation.mutate(year.id);
-        }
-    };
 
     const handleActivate = async (year: AcademicYear) => {
         const confirmed = await confirm({
@@ -114,12 +83,12 @@ export default function AcademicYearsPage() {
             accessor: (row) => new Date(row.endDate).toLocaleDateString(),
         },
         {
-            key: 'status',
+            key: 'isActive',
             header: 'Status',
-            accessor: 'status',
+            accessor: 'isActive',
             render: (value) => (
-                <Badge variant={value === 'active' ? 'success' : 'default'}>
-                    {String(value)}
+                <Badge variant={value ? 'success' : 'default'}>
+                    {value ? 'Active' : 'Inactive'}
                 </Badge>
             ),
         },
@@ -141,13 +110,6 @@ export default function AcademicYearsPage() {
             label: 'Activate',
             icon: <Play className="h-3 w-3" />,
             onClick: handleActivate,
-            show: (row) => !row.isCurrent,
-        },
-        {
-            label: 'Delete',
-            icon: <Trash2 className="h-3 w-3" />,
-            onClick: handleDelete,
-            variant: 'danger',
             show: (row) => !row.isCurrent,
         },
     ];

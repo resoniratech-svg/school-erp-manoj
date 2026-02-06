@@ -9,11 +9,12 @@ import { buildQueryParams, type QueryParams } from '../types/pagination';
 export interface Exam {
     id: string;
     name: string;
-    type: 'unit' | 'midterm' | 'final' | 'practical';
+    type: string;
+    description?: string;
     academicYearId: string;
     startDate: string;
     endDate: string;
-    status: 'scheduled' | 'ongoing' | 'completed';
+    status: 'scheduled' | 'ongoing' | 'completed' | 'draft' | 'published';
 }
 
 export interface ExamSchedule {
@@ -24,8 +25,12 @@ export interface ExamSchedule {
     date: string;
     startTime: string;
     endTime: string;
-    room?: string;
     maxMarks: number;
+    exam?: { id: string; name: string };
+    subject?: { id: string; name: string };
+    class?: { id: string; name: string };
+    section?: { id: string; name: string };
+    sectionId?: string;
 }
 
 export interface Grade {
@@ -41,8 +46,9 @@ export interface Grade {
 
 export interface CreateExamInput {
     name: string;
-    type: 'unit' | 'midterm' | 'final' | 'practical';
-    academicYearId: string;
+    type: string;
+    description?: string;
+    academicYearId?: string;
     startDate: string;
     endDate: string;
 }
@@ -80,35 +86,58 @@ export const examsClient = {
         return response.data.data;
     },
 
-    /**
-     * Schedules
-     */
+    async delete(id: string): Promise<void> {
+        await apiClient.delete(`/api/v1/exams/${id}`);
+    },
+
+    async publish(id: string): Promise<Exam> {
+        const response = await apiClient.post<ApiResponse<Exam>>(
+            `/api/v1/exams/${id}/publish`,
+            {}
+        );
+        return response.data.data;
+    },
+
+    async archive(id: string): Promise<Exam> {
+        const response = await apiClient.post<ApiResponse<Exam>>(
+            `/api/v1/exams/${id}/archive`,
+            {}
+        );
+        return response.data.data;
+    },
+
     schedules: {
-        async list(examId: string): Promise<ExamSchedule[]> {
-            const response = await apiClient.get<ApiResponse<ExamSchedule[]>>(
-                `/api/v1/exams/${examId}/schedules`
-            );
-            return response.data.data;
+        async list(params: QueryParams & { examId?: string }): Promise<PaginatedResponse<ExamSchedule>> {
+            const { examId, ...rest } = params;
+            const query = buildQueryParams(rest);
+            const url = examId
+                ? `/api/v1/exams/${examId}/schedules${query}`
+                : `/api/v1/exams/schedules${query}`;
+            const response = await apiClient.get<PaginatedResponse<ExamSchedule>>(url);
+            return response.data;
         },
 
-        async create(examId: string, data: Omit<ExamSchedule, 'id' | 'examId'>): Promise<ExamSchedule> {
+        async create(data: Omit<ExamSchedule, 'id'>): Promise<ExamSchedule> {
+            const { examId, ...rest } = data;
             const response = await apiClient.post<ApiResponse<ExamSchedule>>(
                 `/api/v1/exams/${examId}/schedules`,
-                data
+                rest
             );
             return response.data.data;
         },
 
-        async update(examId: string, scheduleId: string, data: Partial<ExamSchedule>): Promise<ExamSchedule> {
+        async update(id: string, data: Partial<ExamSchedule>): Promise<ExamSchedule> {
+            // If examId is in data, we can use it, otherwise we might need a different endpoint
+            // For now, let's assume we have examId or a flat endpoint
             const response = await apiClient.patch<ApiResponse<ExamSchedule>>(
-                `/api/v1/exams/${examId}/schedules/${scheduleId}`,
+                `/api/v1/exams/schedules/${id}`,
                 data
             );
             return response.data.data;
         },
 
-        async delete(examId: string, scheduleId: string): Promise<void> {
-            await apiClient.delete(`/api/v1/exams/${examId}/schedules/${scheduleId}`);
+        async delete(id: string): Promise<void> {
+            await apiClient.delete(`/api/v1/exams/schedules/${id}`);
         },
     },
 
@@ -149,6 +178,25 @@ export const examsClient = {
                 data
             );
             return response.data.data;
+        },
+    },
+
+    /**
+     * Marks
+     */
+    marks: {
+        async get(params: { scheduleId: string }): Promise<{ entries: any[] }> {
+            const response = await apiClient.get<ApiResponse<{ entries: any[] }>>(
+                `/api/v1/exams/schedules/${params.scheduleId}/marks`
+            );
+            return response.data.data;
+        },
+
+        async saveBulk(data: { scheduleId: string; entries: any[] }): Promise<void> {
+            await apiClient.post(
+                `/api/v1/exams/schedules/${data.scheduleId}/marks/bulk`,
+                { entries: data.entries }
+            );
         },
     },
 };

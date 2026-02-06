@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams, useParams } from 'next/navigation';
 import { ArrowLeft, Save, Trash2, GraduationCap } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageContent, Card } from '@/components/layout/PageContent';
@@ -22,11 +22,9 @@ import { useToast } from '@/components/ui/Toast';
 import { useConfirm } from '@/components/ui/ConfirmDialog';
 import { academicClient, isApiError } from '@school-erp/api-client';
 
-interface PageProps {
-    params: { id: string };
-}
-
-export default function ClassDetailPage({ params }: PageProps) {
+export default function ClassDetailPage() {
+    const params = useParams();
+    const id = Array.isArray(params?.id) ? params.id[0] : params?.id;
     const router = useRouter();
     const searchParams = useSearchParams();
     const toast = useToast();
@@ -41,7 +39,7 @@ export default function ClassDetailPage({ params }: PageProps) {
     });
 
     const { data: classItem, isLoading, isError, refetch } = useQuery(
-        () => academicClient.classes.get(params.id)
+        () => academicClient.classes.get(id ?? '')
     );
 
     useEffect(() => {
@@ -56,7 +54,7 @@ export default function ClassDetailPage({ params }: PageProps) {
 
     const updateMutation = useMutation(
         () =>
-            academicClient.classes.update(params.id, {
+            academicClient.classes.update(id ?? '', {
                 name: formData.name,
                 code: formData.code,
                 grade: parseInt(formData.grade, 10),
@@ -78,7 +76,7 @@ export default function ClassDetailPage({ params }: PageProps) {
     );
 
     const deleteMutation = useMutation(
-        () => academicClient.classes.delete(params.id),
+        () => academicClient.classes.delete(id ?? ''),
         {
             onSuccess: () => {
                 toast.success('Class deleted successfully');
@@ -111,6 +109,8 @@ export default function ClassDetailPage({ params }: PageProps) {
         e.preventDefault();
         updateMutation.mutate(undefined);
     };
+
+    if (!id) return <PageError message="Invalid Class ID" />;
 
     if (isLoading) {
         return <PageLoader />;

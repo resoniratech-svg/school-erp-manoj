@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams, useParams } from 'next/navigation';
 import { ArrowLeft, Save, Trash2, Bus } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageContent, Card } from '@/components/layout/PageContent';
@@ -18,9 +18,9 @@ import { useToast } from '@/components/ui/Toast';
 import { useConfirm } from '@/components/ui/ConfirmDialog';
 import { transportClient, isApiError } from '@school-erp/api-client';
 
-interface PageProps { params: { id: string }; }
-
-export default function VehicleDetailPage({ params }: PageProps) {
+export default function VehicleDetailPage() {
+    const params = useParams<{ id: string }>();
+    const id = params.id;
     const router = useRouter();
     const searchParams = useSearchParams();
     const toast = useToast();
@@ -28,16 +28,16 @@ export default function VehicleDetailPage({ params }: PageProps) {
     const [isEditing, setIsEditing] = useState(searchParams.get('edit') === 'true');
     const [formData, setFormData] = useState({ registrationNumber: '', model: '', capacity: '' });
 
-    const { data: vehicle, isLoading, isError, refetch } = useQuery(() => transportClient.vehicles.get(params.id));
+    const { data: vehicle, isLoading, isError, refetch } = useQuery(() => transportClient.vehicles.get(id));
 
     useEffect(() => { if (vehicle) setFormData({ registrationNumber: vehicle.registrationNumber, model: vehicle.model ?? '', capacity: String(vehicle.capacity) }); }, [vehicle]);
 
-    const updateMutation = useMutation(() => transportClient.vehicles.update(params.id, { registrationNumber: formData.registrationNumber, model: formData.model, capacity: parseInt(formData.capacity, 10) }), {
+    const updateMutation = useMutation(() => transportClient.vehicles.update(id, { registrationNumber: formData.registrationNumber, model: formData.model, capacity: parseInt(formData.capacity, 10) }), {
         onSuccess: () => { toast.success('Updated'); setIsEditing(false); refetch(); },
         onError: (e) => toast.error(isApiError(e) ? e.message : 'Failed'),
     });
 
-    const deleteMutation = useMutation(() => transportClient.vehicles.delete(params.id), {
+    const deleteMutation = useMutation(() => transportClient.vehicles.delete(id), {
         onSuccess: () => { toast.success('Deleted'); router.push('/transport/vehicles'); },
         onError: (e) => toast.error(isApiError(e) ? e.message : 'Cannot delete'),
     });

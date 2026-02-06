@@ -20,8 +20,7 @@ import { academicClient, isApiError } from '@school-erp/api-client';
 const SUBJECT_TYPES = [
     { value: 'core', label: 'Core' },
     { value: 'elective', label: 'Elective' },
-    { value: 'language', label: 'Language' },
-    { value: 'activity', label: 'Activity' },
+    { value: 'extra', label: 'Extra' },
 ];
 
 export default function CreateSubjectPage() {
@@ -40,7 +39,7 @@ export default function CreateSubjectPage() {
             academicClient.subjects.create({
                 name: formData.name,
                 code: formData.code,
-                type: formData.type as 'core' | 'elective' | 'language' | 'activity',
+                type: formData.type as 'core' | 'elective' | 'extra',
             }),
         {
             onSuccess: (subject) => {

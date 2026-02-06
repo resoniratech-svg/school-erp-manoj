@@ -4,7 +4,7 @@
  * Fee Assignment Detail Page
  */
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { ArrowLeft, User, FileText, CreditCard, AlertCircle } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageContent, Card } from '@/components/layout/PageContent';
@@ -23,15 +23,13 @@ const STATUS_VARIANTS: Record<string, 'default' | 'success' | 'warning' | 'error
     overdue: 'error',
 };
 
-interface PageProps {
-    params: { id: string };
-}
-
-export default function FeeAssignmentDetailPage({ params }: PageProps) {
+export default function FeeAssignmentDetailPage() {
+    const params = useParams<{ id: string }>();
+    const id = params.id;
     const router = useRouter();
 
     const { data: assignment, isLoading, isError, refetch } = useQuery(
-        () => feesClient.assignments.get(params.id)
+        () => feesClient.assignments.get(id)
     );
 
     const formatCurrency = (amount: number) => {

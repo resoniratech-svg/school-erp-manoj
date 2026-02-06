@@ -5,7 +5,7 @@
  * CRITICAL: No edit/delete functionality - immutable record
  */
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { ArrowLeft, CreditCard, User, FileText, Lock, Printer } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageContent, Card } from '@/components/layout/PageContent';
@@ -26,15 +26,13 @@ const MODE_LABELS: Record<string, string> = {
     online: 'Online',
 };
 
-interface PageProps {
-    params: { id: string };
-}
-
-export default function PaymentDetailPage({ params }: PageProps) {
+export default function PaymentDetailPage() {
+    const params = useParams<{ id: string }>();
+    const id = params.id;
     const router = useRouter();
 
     const { data: payment, isLoading, isError, refetch } = useQuery(
-        () => feesClient.payments.get(params.id)
+        () => feesClient.payments.get(id)
     );
 
     const formatCurrency = (amount: number) => {

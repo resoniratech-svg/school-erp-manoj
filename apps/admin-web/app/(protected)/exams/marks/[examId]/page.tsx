@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { ArrowLeft, Save, Lock, AlertCircle } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageContent, Card } from '@/components/layout/PageContent';
@@ -18,7 +18,7 @@ import { WithFeature } from '@/components/auth/WithFeature';
 import { useQuery, useMutation } from '@/lib/hooks';
 import { useToast } from '@/components/ui/Toast';
 import { useConfirm } from '@/components/ui/ConfirmDialog';
-import { examsClient, academicClient, isApiError } from '@school-erp/api-client';
+import { examsClient, isApiError } from '@school-erp/api-client';
 
 interface MarkEntry {
     studentId: string;
@@ -28,11 +28,9 @@ interface MarkEntry {
     grade: string;
 }
 
-interface PageProps {
-    params: { examId: string };
-}
-
-export default function ExamMarksPage({ params }: PageProps) {
+export default function ExamMarksPage() {
+    const params = useParams<{ examId: string }>();
+    const examId = params.examId;
     const router = useRouter();
     const toast = useToast();
     const confirm = useConfirm();
@@ -41,11 +39,11 @@ export default function ExamMarksPage({ params }: PageProps) {
     const [marks, setMarks] = useState<MarkEntry[]>([]);
 
     const { data: exam, isLoading: examLoading } = useQuery(
-        () => examsClient.get(params.examId)
+        () => examsClient.get(examId)
     );
 
     const { data: schedulesData } = useQuery(
-        () => examsClient.schedules.list({ examId: params.examId, limit: 100 })
+        () => examsClient.schedules.list({ examId: examId, limit: 100 })
     );
     const schedules = schedulesData?.data ?? [];
 

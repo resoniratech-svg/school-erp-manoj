@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams, useParams } from 'next/navigation';
 import { ArrowLeft, Save, Trash2, Shield } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageContent, Card } from '@/components/layout/PageContent';
@@ -22,11 +22,9 @@ import { useConfirm } from '@/components/ui/ConfirmDialog';
 import { useAuth } from '@/context/AuthContext';
 import { rolesClient, isApiError, type Permission } from '@school-erp/api-client';
 
-interface RoleDetailPageProps {
-    params: { id: string };
-}
-
-export default function RoleDetailPage({ params }: RoleDetailPageProps) {
+export default function RoleDetailPage() {
+    const params = useParams<{ id: string }>();
+    const id = params.id;
     const router = useRouter();
     const searchParams = useSearchParams();
     const toast = useToast();
@@ -42,7 +40,7 @@ export default function RoleDetailPage({ params }: RoleDetailPageProps) {
     });
 
     const { data: role, isLoading, isError, refetch } = useQuery(
-        () => rolesClient.get(params.id)
+        () => rolesClient.get(id)
     );
 
     const { data: allPermissions } = useQuery(() => rolesClient.getPermissions());
@@ -68,7 +66,7 @@ export default function RoleDetailPage({ params }: RoleDetailPageProps) {
 
     const updateMutation = useMutation(
         () =>
-            rolesClient.update(params.id, {
+            rolesClient.update(id, {
                 name: formData.name,
                 description: formData.description,
                 permissions: formData.permissions,
@@ -90,7 +88,7 @@ export default function RoleDetailPage({ params }: RoleDetailPageProps) {
     );
 
     const deleteMutation = useMutation(
-        () => rolesClient.delete(params.id),
+        () => rolesClient.delete(id),
         {
             onSuccess: () => {
                 toast.success('Role deleted successfully');
@@ -244,8 +242,8 @@ export default function RoleDetailPage({ params }: RoleDetailPageProps) {
                                                 <label
                                                     key={perm.key}
                                                     className={`flex items-start gap-2 rounded p-2 ${canAssign
-                                                            ? 'cursor-pointer hover:bg-gray-50'
-                                                            : 'cursor-not-allowed opacity-50'
+                                                        ? 'cursor-pointer hover:bg-gray-50'
+                                                        : 'cursor-not-allowed opacity-50'
                                                         }`}
                                                 >
                                                     <input

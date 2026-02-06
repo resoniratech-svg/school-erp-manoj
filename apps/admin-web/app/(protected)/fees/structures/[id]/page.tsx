@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams, useParams } from 'next/navigation';
 import { ArrowLeft, Save, Trash2, FileText } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageContent, Card } from '@/components/layout/PageContent';
@@ -32,11 +32,9 @@ const FEE_TYPES = [
     { value: 'other', label: 'Other' },
 ];
 
-interface PageProps {
-    params: { id: string };
-}
-
-export default function FeeStructureDetailPage({ params }: PageProps) {
+export default function FeeStructureDetailPage() {
+    const params = useParams<{ id: string }>();
+    const id = params.id;
     const router = useRouter();
     const searchParams = useSearchParams();
     const toast = useToast();
@@ -52,7 +50,7 @@ export default function FeeStructureDetailPage({ params }: PageProps) {
     });
 
     const { data: structure, isLoading, isError, refetch } = useQuery(
-        () => feesClient.structures.get(params.id)
+        () => feesClient.structures.get(id)
     );
 
     useEffect(() => {
@@ -68,7 +66,7 @@ export default function FeeStructureDetailPage({ params }: PageProps) {
 
     const updateMutation = useMutation(
         () =>
-            feesClient.structures.update(params.id, {
+            feesClient.structures.update(id, {
                 name: formData.name,
                 type: formData.type,
                 amount: parseFloat(formData.amount),
@@ -91,7 +89,7 @@ export default function FeeStructureDetailPage({ params }: PageProps) {
     );
 
     const deleteMutation = useMutation(
-        () => feesClient.structures.delete(params.id),
+        () => feesClient.structures.delete(id),
         {
             onSuccess: () => {
                 toast.success('Fee structure deleted successfully');

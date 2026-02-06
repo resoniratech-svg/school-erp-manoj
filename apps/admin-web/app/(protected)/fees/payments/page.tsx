@@ -7,7 +7,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Eye, CreditCard, AlertCircle, Lock } from 'lucide-react';
+import { Eye, CreditCard, Lock } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageContent, Card } from '@/components/layout/PageContent';
 import { DataTable, type Column, type RowAction } from '@/components/ui/DataTable';

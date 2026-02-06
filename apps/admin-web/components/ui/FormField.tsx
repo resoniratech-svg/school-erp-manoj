@@ -20,7 +20,7 @@ export interface FormFieldProps extends InputHTMLAttributes<HTMLInputElement> {
     /** Whether field is required */
     required?: boolean;
     /** Input type override */
-    type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'date';
+    type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'date' | 'time';
     /** Left addon */
     leftAddon?: ReactNode;
     /** Right addon */

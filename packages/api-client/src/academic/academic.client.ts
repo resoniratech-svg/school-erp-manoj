@@ -183,7 +183,15 @@ export const academicClient = {
             return response.data.data;
         },
 
-        async list(classId: string): Promise<Section[]> {
+        async list(params?: QueryParams & { classId?: string }): Promise<PaginatedResponse<Section>> {
+            const query = buildQueryParams(params || {});
+            const response = await apiClient.get<PaginatedResponse<Section>>(
+                `/api/v1/academic/sections${query}`
+            );
+            return response.data;
+        },
+
+        async listByClass(classId: string): Promise<Section[]> {
             const response = await apiClient.get<ApiResponse<Section[]>>(
                 `/api/v1/academic/classes/${classId}/sections`
             );

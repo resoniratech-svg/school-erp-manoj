@@ -10,8 +10,10 @@ export interface Announcement {
     id: string;
     title: string;
     content: string;
-    priority: 'low' | 'medium' | 'high';
-    targetAudience: string[];
+    priority?: 'low' | 'medium' | 'high';
+    audience: string;
+    status: 'draft' | 'published' | 'archived';
+    createdAt: string;
     publishedAt?: Date;
     expiresAt?: Date;
     createdBy: string;
@@ -34,8 +36,14 @@ export interface Notification {
     title: string;
     message: string;
     isRead: boolean;
+    channel: string;
+    status: string;
+    sentAt?: Date;
     data?: Record<string, unknown>;
     createdAt: Date;
+    recipient?: {
+        name: string;
+    };
 }
 
 /**
@@ -61,7 +69,12 @@ export const communicationClient = {
             return response.data.data;
         },
 
-        async create(data: Omit<Announcement, 'id' | 'createdBy'>): Promise<Announcement> {
+        async create(data: {
+            title: string;
+            content: string;
+            audience: string;
+            priority?: 'low' | 'medium' | 'high';
+        }): Promise<Announcement> {
             const response = await apiClient.post<ApiResponse<Announcement>>(
                 '/api/v1/communication/announcements',
                 data
@@ -79,6 +92,10 @@ export const communicationClient = {
 
         async delete(id: string): Promise<void> {
             await apiClient.delete(`/api/v1/communication/announcements/${id}`);
+        },
+
+        async publish(id: string): Promise<void> {
+            await apiClient.post(`/api/v1/communication/announcements/${id}/publish`, {});
         },
     },
 

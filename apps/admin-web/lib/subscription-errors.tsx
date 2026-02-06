@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/components/ui/Toast';
 
@@ -92,5 +92,5 @@ export function SubscriptionErrorBoundary({
     fallback?: React.ReactNode;
 }) {
     // This is a simplified boundary - full implementation would use ErrorBoundary
-    return <>{ children } </>;
+    return <>{children} </>;
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { ArrowLeft, Trash2, User, Route as RouteIcon, MapPin } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageContent, Card } from '@/components/layout/PageContent';
@@ -15,16 +15,16 @@ import { useToast } from '@/components/ui/Toast';
 import { useConfirm } from '@/components/ui/ConfirmDialog';
 import { transportClient, isApiError } from '@school-erp/api-client';
 
-interface PageProps { params: { id: string }; }
-
-export default function AssignmentDetailPage({ params }: PageProps) {
+export default function AssignmentDetailPage() {
+    const params = useParams<{ id: string }>();
+    const id = params.id;
     const router = useRouter();
     const toast = useToast();
     const confirm = useConfirm();
 
-    const { data: assignment, isLoading, isError, refetch } = useQuery(() => transportClient.assignments.get(params.id));
+    const { data: assignment, isLoading, isError, refetch } = useQuery(() => transportClient.assignments.get(id));
 
-    const deleteMutation = useMutation(() => transportClient.assignments.delete(params.id), {
+    const deleteMutation = useMutation(() => transportClient.assignments.delete(id), {
         onSuccess: () => { toast.success('Assignment removed'); router.push('/transport/assignments'); },
         onError: (e) => toast.error(isApiError(e) ? e.message : 'Failed'),
     });
