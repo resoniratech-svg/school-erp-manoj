@@ -24,6 +24,8 @@ export interface Class {
     academicYearId: string;
     sections: Section[];
     code?: string;
+    academicYear?: AcademicYear;
+    status?: string;
 }
 
 export interface Section {
@@ -33,6 +35,9 @@ export interface Section {
     capacity: number;
     teacherId?: string;
     code?: string;
+    class?: Class;
+    classTeacher?: { id: string; name: string };
+    status?: string;
 }
 
 export interface Subject {
