@@ -176,6 +176,13 @@ export const academicClient = {
      * Sections
      */
     sections: {
+        async get(id: string): Promise<Section> {
+            const response = await apiClient.get<ApiResponse<Section>>(
+                `/api/v1/academic/sections/${id}`
+            );
+            return response.data.data;
+        },
+
         async list(classId: string): Promise<Section[]> {
             const response = await apiClient.get<ApiResponse<Section[]>>(
                 `/api/v1/academic/classes/${classId}/sections`
