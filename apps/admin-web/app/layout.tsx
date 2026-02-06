@@ -6,6 +6,8 @@ import { FeatureFlagProvider } from '@/context/FeatureFlagContext';
 import { ToastProvider } from '@/components/ui/Toast';
 import { ConfirmProvider } from '@/components/ui/ConfirmDialog';
 
+import { ApiUrlValidator } from '@/components/ApiUrlValidator';
+
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -25,6 +27,7 @@ export default function RootLayout({
                     <FeatureFlagProvider>
                         <ToastProvider>
                             <ConfirmProvider>
+                                <ApiUrlValidator />
                                 {children}
                             </ConfirmProvider>
                         </ToastProvider>

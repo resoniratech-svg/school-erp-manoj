@@ -12,15 +12,18 @@ export function createApp(): Application {
   const app = express();
 
   app.use(helmet());
-  
+
   const corsOrigins = env.CORS_ORIGINS === '*' ? '*' : env.CORS_ORIGINS.split(',');
-  app.use(cors({ origin: corsOrigins }));
-  
+  app.use(cors({
+    origin: corsOrigins,
+    credentials: true,
+  }));
+
   app.use(compression());
-  
+
   app.use(express.json({ limit: '10mb' }));
   app.use(express.urlencoded({ extended: true, limit: '10mb' }));
-  
+
   app.use(requestIdMiddleware);
   app.use(requestLoggerMiddleware);
 
