@@ -13,6 +13,7 @@ export interface AcademicYear {
     startDate: Date;
     endDate: Date;
     isActive: boolean;
+    isCurrent?: boolean;
     tenantId: string;
 }
 
