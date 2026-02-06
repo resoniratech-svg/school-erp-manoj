@@ -23,6 +23,7 @@ export interface Class {
     branchId: string;
     academicYearId: string;
     sections: Section[];
+    code?: string;
 }
 
 export interface Section {
@@ -31,6 +32,7 @@ export interface Section {
     classId: string;
     capacity: number;
     teacherId?: string;
+    code?: string;
 }
 
 export interface Subject {
@@ -52,6 +54,7 @@ export interface CreateClassInput {
     grade: number;
     branchId: string;
     academicYearId: string;
+    code?: string;
 }
 
 export interface CreateSectionInput {
@@ -59,6 +62,7 @@ export interface CreateSectionInput {
     classId: string;
     capacity: number;
     teacherId?: string;
+    code?: string;
 }
 
 export interface CreateSubjectInput {
