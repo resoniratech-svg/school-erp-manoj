@@ -1,0 +1,122 @@
+$ tsc --noEmit
+src/app.ts(5,50): error TS2307: Cannot find module '@school-erp/shared' or its corresponding type declarations.
+src/app.ts(44,16): error TS2339: Property 'isOperational' does not exist on type 'Error'.
+src/app.ts(54,51): error TS2339: Property 'toJSON' does not exist on type 'Error'.
+src/app.ts(62,22): error TS2339: Property 'statusCode' does not exist on type 'Error'.
+src/main.ts(6,20): error TS2307: Cannot find module '@school-erp/database' or its corresponding type declarations.
+src/middleware/authenticate.ts(2,35): error TS2307: Cannot find module '@school-erp/shared' or its corresponding type declarations.
+src/middleware/authenticate.ts(3,29): error TS2307: Cannot find module '../../modules/auth/auth.service' or its corresponding type declarations.
+src/middleware/authenticate.ts(4,34): error TS2307: Cannot find module '../../modules/auth/auth.constants' or its corresponding type declarations.
+src/middleware/authenticate.ts(6,44): error TS6133: 'res' is declared but its value is never read.
+src/middleware/authenticate.ts(32,52): error TS6133: 'res' is declared but its value is never read.
+src/middleware/validate.ts(3,33): error TS2307: Cannot find module '@school-erp/shared' or its corresponding type declarations.
+src/middleware/validate.ts(6,31): error TS6133: 'res' is declared but its value is never read.
+src/modules/academic/academic-years/__tests__/academic-years.test.ts(14,30): error TS2694: Namespace 'global.jest' has no exported member 'Mocked'.
+src/modules/academic/academic-years/__tests__/academic-years.test.ts(52,30): error TS2694: Namespace 'global.jest' has no exported member 'Mocked'.
+src/modules/academic/academic-years/academic-years.constants.ts(4,29): error TS2307: Cannot find module '@school-erp/shared' or its corresponding type declarations.
+src/modules/academic/academic-years/academic-years.controller.ts(6,56): error TS2307: Cannot find module '@school-erp/shared' or its corresponding type declarations.
+src/modules/academic/academic-years/academic-years.controller.ts(44,73): error TS2345: Argument of type 'string | string[]' is not assignable to parameter of type 'string'.
+  Type 'string[]' is not assignable to type 'string'.
+src/modules/academic/academic-years/academic-years.controller.ts(98,72): error TS2345: Argument of type 'string | string[]' is not assignable to parameter of type 'string'.
+  Type 'string[]' is not assignable to type 'string'.
+src/modules/academic/academic-years/academic-years.controller.ts(119,51): error TS2345: Argument of type 'string | string[]' is not assignable to parameter of type 'string'.
+  Type 'string[]' is not assignable to type 'string'.
+src/modules/academic/academic-years/academic-years.controller.ts(137,74): error TS2345: Argument of type 'string | string[]' is not assignable to parameter of type 'string'.
+  Type 'string[]' is not assignable to type 'string'.
+src/modules/academic/academic-years/academic-years.repository.ts(5,20): error TS2307: Cannot find module '@school-erp/database' or its corresponding type declarations.
+src/modules/academic/academic-years/academic-years.repository.ts(6,29): error TS2307: Cannot find module '@school-erp/database' or its corresponding type declarations.
+src/modules/academic/academic-years/academic-years.repository.ts(129,30): error TS6133: 'tenantId' is declared but its value is never read.
+src/modules/academic/academic-years/academic-years.repository.ts(142,39): error TS7006: Parameter 'tx' implicitly has an 'any' type.
+src/modules/academic/academic-years/academic-years.service.ts(9,8): error TS2307: Cannot find module '@school-erp/shared' or its corresponding type declarations.
+src/modules/auth/__tests__/auth.service.test.ts(4,60): error TS6133: 'BadRequestError' is declared but its value is never read.
+src/modules/auth/__tests__/auth.service.test.ts(4,83): error TS2307: Cannot find module '@school-erp/shared' or its corresponding type declarations.
+src/modules/auth/auth.controller.ts(2,50): error TS6133: 'AppError' is declared but its value is never read.
+src/modules/auth/auth.controller.ts(2,66): error TS2307: Cannot find module '@school-erp/shared' or its corresponding type declarations.
+src/modules/auth/auth.controller.ts(56,32): error TS2339: Property 'id' does not exist on type 'JwtPayload'.
+src/modules/auth/auth.controller.ts(76,32): error TS2339: Property 'id' does not exist on type 'JwtPayload'.
+src/modules/auth/auth.controller.ts(98,32): error TS2339: Property 'id' does not exist on type 'JwtPayload'.
+src/modules/auth/auth.controller.ts(120,32): error TS2339: Property 'id' does not exist on type 'JwtPayload'.
+src/modules/auth/auth.controller.ts(140,32): error TS2339: Property 'id' does not exist on type 'JwtPayload'.
+src/modules/auth/auth.repository.ts(1,20): error TS2307: Cannot find module '@school-erp/database' or its corresponding type declarations.
+src/modules/auth/auth.repository.ts(228,35): error TS7006: Parameter 's' implicitly has an 'any' type.
+src/modules/auth/auth.service.ts(9,8): error TS2307: Cannot find module '@school-erp/shared' or its corresponding type declarations.
+src/modules/auth/auth.service.ts(18,3): error TS6196: 'AuthUser' is declared but never used.
+src/modules/auth/auth.service.ts(22,3): error TS6196: 'SessionContext' is declared but never used.
+src/modules/auth/auth.service.ts(70,44): error TS6133: 'ipAddress' is declared but its value is never read.
+src/modules/auth/auth.service.ts(70,64): error TS6133: 'userAgent' is declared but its value is never read.
+src/modules/auth/auth.service.ts(71,11): error TS6133: 'payload' is declared but its value is never read.
+src/modules/auth/auth.service.ts(277,11): error TS6133: 'session' is declared but its value is never read.
+src/modules/auth/auth.service.ts(345,30): error TS6133: 'token' is declared but its value is never read.
+src/modules/auth/auth.types.ts(1,43): error TS2307: Cannot find module '@school-erp/database' or its corresponding type declarations.
+src/modules/authz/__tests__/authz.middleware.test.ts(4,29): error TS6133: 'ForbiddenError' is declared but its value is never read.
+src/modules/authz/__tests__/authz.middleware.test.ts(4,51): error TS2307: Cannot find module '@school-erp/shared' or its corresponding type declarations.
+src/modules/authz/__tests__/permission.guard.test.ts(3,32): error TS2307: Cannot find module '@school-erp/shared' or its corresponding type declarations.
+src/modules/authz/authz.middleware.ts(3,20): error TS2307: Cannot find module '@school-erp/database' or its corresponding type declarations.
+src/modules/authz/authz.middleware.ts(4,51): error TS2307: Cannot find module '@school-erp/shared' or its corresponding type declarations.
+src/modules/authz/authz.middleware.ts(111,5): error TS6133: 'res' is declared but its value is never read.
+src/modules/authz/authz.middleware.ts(139,5): error TS6133: 'res' is declared but its value is never read.
+src/modules/authz/authz.types.ts(2,71): error TS2307: Cannot find module '@school-erp/database' or its corresponding type declarations.
+src/modules/authz/branch.resolver.ts(2,20): error TS2307: Cannot find module '@school-erp/database' or its corresponding type declarations.
+src/modules/authz/branch.resolver.ts(3,47): error TS2307: Cannot find module '@school-erp/shared' or its corresponding type declarations.
+src/modules/authz/branch.resolver.ts(46,28): error TS7006: Parameter 'ub' implicitly has an 'any' type.
+src/modules/authz/branch.resolver.ts(87,5): error TS6133: 'res' is declared but its value is never read.
+src/modules/authz/permission.guard.ts(2,20): error TS2307: Cannot find module '@school-erp/database' or its corresponding type declarations.
+src/modules/authz/permission.guard.ts(3,32): error TS2307: Cannot find module '@school-erp/shared' or its corresponding type declarations.
+src/modules/authz/permission.guard.ts(8,11): error TS6196: 'RoleWithPermissions' is declared but never used.
+src/modules/authz/permission.guard.ts(29,25): error TS7006: Parameter 'ur' implicitly has an 'any' type.
+src/modules/authz/permission.guard.ts(62,36): error TS6133: 'userRoles' is declared but its value is never read.
+src/modules/authz/permission.guard.ts(123,5): error TS6133: 'res' is declared but its value is never read.
+src/modules/authz/permission.guard.ts(153,5): error TS6133: 'res' is declared but its value is never read.
+src/modules/authz/permission.guard.ts(199,5): error TS6133: 'res' is declared but its value is never read.
+src/modules/authz/permission.guard.ts(231,5): error TS6133: 'res' is declared but its value is never read.
+src/modules/authz/tenant.resolver.ts(2,20): error TS2307: Cannot find module '@school-erp/database' or its corresponding type declarations.
+src/modules/authz/tenant.resolver.ts(3,51): error TS2307: Cannot find module '@school-erp/shared' or its corresponding type declarations.
+src/modules/authz/tenant.resolver.ts(51,5): error TS6133: 'res' is declared but its value is never read.
+src/modules/roles/__tests__/roles.service.test.ts(3,3): error TS6133: 'NotFoundError' is declared but its value is never read.
+src/modules/roles/__tests__/roles.service.test.ts(7,8): error TS2307: Cannot find module '@school-erp/shared' or its corresponding type declarations.
+src/modules/roles/__tests__/roles.service.test.ts(10,1): error TS6133: 'ROLE_ERROR_CODES' is declared but its value is never read.
+src/modules/roles/index.ts(7,1): error TS2308: Module './roles.types' has already exported a member named 'CreateRoleInput'. Consider explicitly re-exporting to resolve the ambiguity.
+src/modules/roles/index.ts(7,1): error TS2308: Module './roles.types' has already exported a member named 'UpdateRoleInput'. Consider explicitly re-exporting to resolve the ambiguity.
+src/modules/roles/roles.constants.ts(1,29): error TS2307: Cannot find module '@school-erp/shared' or its corresponding type declarations.
+src/modules/roles/roles.controller.ts(2,56): error TS2307: Cannot find module '@school-erp/shared' or its corresponding type declarations.
+src/modules/roles/roles.controller.ts(41,51): error TS2345: Argument of type 'string | string[]' is not assignable to parameter of type 'string'.
+  Type 'string[]' is not assignable to type 'string'.
+src/modules/roles/roles.controller.ts(96,50): error TS2345: Argument of type 'string | string[]' is not assignable to parameter of type 'string'.
+  Type 'string[]' is not assignable to type 'string'.
+src/modules/roles/roles.controller.ts(118,37): error TS2345: Argument of type 'string | string[]' is not assignable to parameter of type 'string'.
+  Type 'string[]' is not assignable to type 'string'.
+src/modules/roles/roles.repository.ts(1,20): error TS2307: Cannot find module '@school-erp/database' or its corresponding type declarations.
+src/modules/roles/roles.repository.ts(2,29): error TS2307: Cannot find module '@school-erp/database' or its corresponding type declarations.
+src/modules/roles/roles.service.ts(6,8): error TS2307: Cannot find module '@school-erp/shared' or its corresponding type declarations.
+src/modules/roles/roles.service.ts(237,49): error TS7006: Parameter 'p' implicitly has an 'any' type.
+src/modules/users/__tests__/users.service.test.ts(6,8): error TS2307: Cannot find module '@school-erp/shared' or its corresponding type declarations.
+src/modules/users/__tests__/users.service.test.ts(9,1): error TS6133: 'USER_ERROR_CODES' is declared but its value is never read.
+src/modules/users/index.ts(7,1): error TS2308: Module './users.types' has already exported a member named 'AssignBranchInput'. Consider explicitly re-exporting to resolve the ambiguity.
+src/modules/users/index.ts(7,1): error TS2308: Module './users.types' has already exported a member named 'AssignRoleInput'. Consider explicitly re-exporting to resolve the ambiguity.
+src/modules/users/index.ts(7,1): error TS2308: Module './users.types' has already exported a member named 'CreateUserInput'. Consider explicitly re-exporting to resolve the ambiguity.
+src/modules/users/index.ts(7,1): error TS2308: Module './users.types' has already exported a member named 'UpdateUserInput'. Consider explicitly re-exporting to resolve the ambiguity.
+src/modules/users/users.constants.ts(1,29): error TS2307: Cannot find module '@school-erp/shared' or its corresponding type declarations.
+src/modules/users/users.controller.ts(2,56): error TS2307: Cannot find module '@school-erp/shared' or its corresponding type declarations.
+src/modules/users/users.controller.ts(42,51): error TS2345: Argument of type 'string | string[]' is not assignable to parameter of type 'string'.
+  Type 'string[]' is not assignable to type 'string'.
+src/modules/users/users.controller.ts(97,50): error TS2345: Argument of type 'string | string[]' is not assignable to parameter of type 'string'.
+  Type 'string[]' is not assignable to type 'string'.
+src/modules/users/users.controller.ts(118,37): error TS2345: Argument of type 'string | string[]' is not assignable to parameter of type 'string'.
+  Type 'string[]' is not assignable to type 'string'.
+src/modules/users/users.controller.ts(137,37): error TS2345: Argument of type 'string | string[]' is not assignable to parameter of type 'string'.
+  Type 'string[]' is not assignable to type 'string'.
+src/modules/users/users.controller.ts(155,37): error TS2345: Argument of type 'string | string[]' is not assignable to parameter of type 'string'.
+  Type 'string[]' is not assignable to type 'string'.
+src/modules/users/users.controller.ts(174,39): error TS2345: Argument of type 'string | string[]' is not assignable to parameter of type 'string'.
+  Type 'string[]' is not assignable to type 'string'.
+src/modules/users/users.controller.ts(192,39): error TS2345: Argument of type 'string | string[]' is not assignable to parameter of type 'string'.
+  Type 'string[]' is not assignable to type 'string'.
+src/modules/users/users.repository.ts(1,20): error TS2307: Cannot find module '@school-erp/database' or its corresponding type declarations.
+src/modules/users/users.repository.ts(2,29): error TS2307: Cannot find module '@school-erp/database' or its corresponding type declarations.
+src/modules/users/users.repository.ts(170,28): error TS6133: 'tenantId' is declared but its value is never read.
+src/modules/users/users.repository.ts(178,32): error TS6133: 'tenantId' is declared but its value is never read.
+src/modules/users/users.service.ts(7,3): error TS6133: 'ForbiddenError' is declared but its value is never read.
+src/modules/users/users.service.ts(8,8): error TS2307: Cannot find module '@school-erp/shared' or its corresponding type declarations.
+src/modules/users/users.service.ts(332,45): error TS7006: Parameter 'ub' implicitly has an 'any' type.
+src/modules/users/users.service.ts(334,49): error TS7006: Parameter 'ub' implicitly has an 'any' type.
+src/modules/users/users.types.ts(1,43): error TS2307: Cannot find module '@school-erp/database' or its corresponding type declarations.

@@ -1,0 +1,24 @@
+/**
+ * Periods Sub-module Constants
+ */
+import { PERMISSIONS } from '@school-erp/shared';
+
+export const PERIOD_PERMISSIONS = {
+    CREATE: PERMISSIONS.PERIOD.CREATE,
+    READ: PERMISSIONS.PERIOD.READ,
+    UPDATE: PERMISSIONS.PERIOD.UPDATE,
+    DELETE: PERMISSIONS.PERIOD.DELETE,
+} as const;
+
+export const PERIOD_ERROR_CODES = {
+    NOT_FOUND: 'PERIOD_NOT_FOUND',
+    OVERLAP: 'PERIOD_OVERLAP',
+    INVALID_TIME_RANGE: 'INVALID_TIME_RANGE',
+    HAS_DEPENDENCIES: 'PERIOD_HAS_DEPENDENCIES',
+} as const;
+
+export const PAGINATION_DEFAULTS = {
+    PAGE: 1,
+    LIMIT: 20,
+    MAX_LIMIT: 100,
+} as const;
