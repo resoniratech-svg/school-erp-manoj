@@ -57,7 +57,7 @@ export interface CreateAcademicYearInput {
 export interface CreateClassInput {
     name: string;
     grade: number;
-    branchId: string;
+    branchId?: string;
     academicYearId: string;
     code?: string;
 }
