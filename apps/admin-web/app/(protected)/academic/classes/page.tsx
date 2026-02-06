@@ -143,7 +143,7 @@ export default function ClassesPage() {
                 />
 
                 <Card>
-                    <DataTable
+                    <DataTable<Class>
                         columns={columns}
                         data={classes}
                         keyAccessor="id"

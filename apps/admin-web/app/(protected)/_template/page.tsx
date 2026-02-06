@@ -55,8 +55,8 @@ export default function TemplatePage() {
             render: (value) => (
                 <span
                     className={`inline-flex rounded-full px-2 py-1 text-xs font-medium ${value === 'active'
-                            ? 'bg-green-100 text-green-700'
-                            : 'bg-gray-100 text-gray-700'
+                        ? 'bg-green-100 text-green-700'
+                        : 'bg-gray-100 text-gray-700'
                         }`}
                 >
                     {String(value)}
@@ -115,7 +115,7 @@ export default function TemplatePage() {
 
             {/* Data Table */}
             <Card>
-                <DataTable
+                <DataTable<ExampleItem>
                     columns={columns}
                     data={data ?? []}
                     keyAccessor="id"
