@@ -300,6 +300,7 @@ async function main() {
     const createdRole = await prisma.role.upsert({
       where: {
         tenantId_code: {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           tenantId: null as any,
           code: role.code,
         },
@@ -319,8 +320,9 @@ async function main() {
     });
 
     const allPermissions = await prisma.permission.findMany();
-    
-    const matchingPermissions = allPermissions.filter(p => {
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const matchingPermissions = allPermissions.filter((p: any) => {
       return role.permissions.some(rp => {
         if (rp.includes('*')) {
           const [resource, action] = rp.split(':');
@@ -345,7 +347,7 @@ async function main() {
         },
       });
     }
-    
+
     console.log(`  ✅ ${role.code}: ${matchingPermissions.length} permissions`);
   }
 

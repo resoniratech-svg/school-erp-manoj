@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-namespace */
 import type { Request, Response, NextFunction } from 'express';
 import type { UserType, UserStatus, TenantStatus, BranchStatus } from '@school-erp/database';
 

@@ -9,6 +9,7 @@ export const softDeleteExtension = Prisma.defineExtension({
         where: Prisma.Args<T, 'update'>['where']
       ): Promise<Prisma.Result<T, A, 'update'>> {
         const context = Prisma.getExtensionContext(this);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         return (context as any).update({
           where,
           data: {
@@ -22,6 +23,7 @@ export const softDeleteExtension = Prisma.defineExtension({
         args?: Prisma.Args<T, 'findMany'>
       ): Promise<Prisma.Result<T, A, 'findMany'>> {
         const context = Prisma.getExtensionContext(this);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         return (context as any).findMany({
           ...args,
           where: {
@@ -36,6 +38,7 @@ export const softDeleteExtension = Prisma.defineExtension({
         args?: Prisma.Args<T, 'findFirst'>
       ): Promise<Prisma.Result<T, A, 'findFirst'>> {
         const context = Prisma.getExtensionContext(this);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         return (context as any).findFirst({
           ...args,
           where: {

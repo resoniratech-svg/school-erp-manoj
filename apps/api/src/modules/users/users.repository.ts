@@ -160,7 +160,9 @@ export class UsersRepository {
         firstName: data.firstName,
         lastName: data.lastName,
         phone: data.phone,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         userType: data.userType as any,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         status: data.status as any,
       },
       select: userSelectFields,

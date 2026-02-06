@@ -17,7 +17,9 @@
     "db:generate": "pnpm --filter @school-erp/database db:generate",
     "db:migrate": "pnpm --filter @school-erp/database db:migrate",
     "db:seed": "pnpm --filter @school-erp/database db:seed",
-    "db:studio": "pnpm --filter @school-erp/database db:studio"
+    "db:studio": "pnpm --filter @school-erp/database db:studio",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "check": "pnpm run lint && pnpm run typecheck && pnpm run build"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
